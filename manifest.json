@@ -1,0 +1,32 @@
+{
+  "name": "Clarity & Flow",
+  "short_name": "Clarity & Flow",
+  "description": "Klarer denken. Tiefer verstehen. Wirksam verändern.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#38426c",
+  "theme_color": "#38426c",
+  "lang": "de",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
