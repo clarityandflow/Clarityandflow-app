@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="de"><head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#38426c" />
+<title>Clarity & Flow – auf den Homescreen</title>
+<meta name="description" content="So legst du Clarity & Flow als App auf deinen Homescreen – in drei Schritten." />
+<link rel="apple-touch-icon" href="/icon-180.png" />
+<link rel="icon" href="/icon-192.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root{ --navy:#38426c; --ink:#1f2540; --muted:#5f6890; --lime:#d6d400; --base:#f5f7f9; --card:#fff; --border:#e4e9ef; --tile:#eef2f5; }
+  *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body{ margin:0; padding:0; background:var(--base); font-family:'Roboto',system-ui,sans-serif; color:var(--ink); -webkit-text-size-adjust:100%; }
+  .wrap{ max-width:448px; margin:0 auto; padding:calc(26px + env(safe-area-inset-top)) 24px calc(40px + env(safe-area-inset-bottom)); }
+  .logo{ height:30px; display:block; }
+  h1{ font-size:1.75rem; line-height:1.14; font-weight:700; margin:22px 0 0; }
+  .rule{ width:54px; height:4px; background:var(--lime); margin:14px 0 0; }
+  .sub{ color:var(--muted); font-size:0.95rem; line-height:1.55; margin:14px 0 0; }
+  .note{ background:var(--navy); color:#fff; padding:14px 16px; margin:22px 0 0; display:none; }
+  .note b{ display:block; font-size:0.95rem; }
+  .note span{ display:block; font-size:0.82rem; color:rgba(255,255,255,.78); margin-top:3px; }
+
+  /* Phone demo */
+  .stage{ display:flex; justify-content:center; margin:26px 0 0; }
+  .phone{ position:relative; width:248px; height:392px; background:var(--navy); border-radius:34px; padding:11px; box-shadow:0 18px 40px rgba(31,37,64,.28); }
+  .screen{ position:relative; width:100%; height:100%; background:var(--base); border-radius:24px; overflow:hidden; }
+  .notch{ position:absolute; top:0; left:50%; transform:translateX(-50%); width:96px; height:20px; background:var(--navy); border-radius:0 0 14px 14px; z-index:5; }
+  .frame{ position:absolute; inset:0; display:flex; flex-direction:column; opacity:0; animation:cyc 9s infinite; }
+  .frame.b{ animation-delay:3s; } .frame.c{ animation-delay:6s; }
+  @keyframes cyc{ 0%{opacity:0;transform:translateY(7px)} 4%{opacity:1;transform:translateY(0)} 30%{opacity:1;transform:translateY(0)} 35%{opacity:0;transform:translateY(-7px)} 100%{opacity:0} }
+  .cap{ position:absolute; left:0; right:0; bottom:14px; text-align:center; font-size:0.8rem; font-weight:700; color:var(--navy); z-index:6; }
+  .cap b{ background:var(--lime); color:var(--navy); border-radius:50%; width:20px; height:20px; display:inline-flex; align-items:center; justify-content:center; margin-right:7px; font-size:0.72rem; }
+  .fill{ flex:1; }
+  /* shared bits */
+  .bar{ height:46px; background:#fff; border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-around; }
+  .topbar{ height:44px; background:#fff; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; padding:0 14px; font-size:0.82rem; color:var(--muted); }
+  .ico{ width:30px; height:30px; display:flex; align-items:center; justify-content:center; border-radius:8px; color:var(--muted); }
+  .hl{ color:var(--navy); background:rgba(214,212,0,.18); }
+  .pulse{ animation:pulse 1.5s infinite; border-radius:8px; }
+  @keyframes pulse{ 0%{box-shadow:0 0 0 0 rgba(214,212,0,.65)} 70%{box-shadow:0 0 0 11px rgba(214,212,0,0)} 100%{box-shadow:0 0 0 0 rgba(214,212,0,0)} }
+  .sheet{ margin-top:auto; background:#fff; border-top:1px solid var(--border); border-radius:16px 16px 0 0; padding:10px 0 8px; }
+  .row{ display:flex; align-items:center; gap:11px; padding:11px 16px; font-size:0.84rem; color:var(--ink); }
+  .row .sq{ width:26px; height:26px; border-radius:7px; background:var(--tile); display:flex; align-items:center; justify-content:center; color:var(--navy); flex-shrink:0; }
+  .row.on{ background:rgba(214,212,0,.16); font-weight:700; }
+  .appcard{ display:flex; align-items:center; gap:11px; padding:16px; }
+  .appcard img{ width:46px; height:46px; border-radius:11px; }
+  .addbtn{ margin-left:auto; font-weight:700; color:var(--navy); font-size:0.85rem; padding:6px 12px; border-radius:9px; }
+  .miniline{ height:10px; border-radius:5px; background:var(--border); margin:9px 16px; }
+  .miniline.s{ width:55%; }
+
+  .steps{ margin:26px 0 0; }
+  .step{ display:flex; gap:13px; align-items:flex-start; margin-top:14px; }
+  .step .n{ width:27px; height:27px; flex-shrink:0; background:var(--lime); color:var(--navy); font-weight:700; font-size:0.82rem; display:flex; align-items:center; justify-content:center; }
+  .step p{ margin:0; font-size:0.95rem; line-height:1.5; color:var(--ink); padding-top:3px; }
+  .cta{ display:block; width:100%; text-align:center; text-decoration:none; background:var(--navy); color:#fff; font-weight:700; font-size:1rem; letter-spacing:.03em; padding:16px; margin:26px 0 0; border:none; cursor:pointer; }
+  .cta.lime{ background:var(--lime); color:var(--navy); }
+  .hint{ font-size:0.8rem; color:var(--muted); text-align:center; margin:14px 0 0; line-height:1.5; }
+  svg{ display:block; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <img class="logo" src="/icon-512.png" alt="Clarity & Flow" style="height:34px;width:auto;border-radius:8px" />
+  <h1 id="h1">Auf den Homescreen.</h1>
+  <div class="rule"></div>
+  <p class="sub" id="sub">Damit Clarity &amp; Flow wie eine echte App auf deinem Startbildschirm liegt – ein Tippen, immer griffbereit.</p>
+
+  <div class="note" id="inapp">
+    <b>Du bist gerade in einer anderen App.</b>
+    <span>Öffne diese Seite einmal in Safari (iPhone) oder Chrome (Android) – dann klappt das Hinzufügen.</span>
+  </div>
+
+  <div class="stage" id="stage">
+    <div class="phone"><div class="screen">
+      <div class="notch"></div>
+
+      <!-- Frame A: Teilen / Menü -->
+      <div class="frame a">
+        <div class="topbar"><span>clarityandflow.de</span><span id="topdots" style="font-weight:700;letter-spacing:1px"></span></div>
+        <div class="fill"></div>
+        <div class="bar" id="barA"></div>
+        <div class="cap"><b>1</b><span id="capA">Teilen</span></div>
+      </div>
+
+      <!-- Frame B: Zum Homescreen -->
+      <div class="frame b">
+        <div class="topbar"><span>Optionen</span><span>✕</span></div>
+        <div class="fill" style="background:#eef1f5"></div>
+        <div class="sheet">
+          <div class="row"><span class="sq">★</span>Zu Favoriten</div>
+          <div class="row on" id="rowB"><span class="sq">＋</span><span id="menuLabel">Zum Home-Bildschirm</span></div>
+          <div class="row"><span class="sq">🔖</span>Lesezeichen</div>
+        </div>
+        <div class="cap"><b>2</b><span id="capB">Zum Home-Bildschirm</span></div>
+      </div>
+
+      <!-- Frame C: Hinzufügen -->
+      <div class="frame c">
+        <div class="topbar"><span>Abbrechen</span><span class="hl pulse" style="padding:5px 10px;border-radius:8px;font-weight:700" id="addTop">Hinzufügen</span></div>
+        <div class="appcard">
+          <img src="/icon-192.png" alt="" />
+          <div><div style="font-weight:700;font-size:0.86rem">Clarity &amp; Flow</div><div style="font-size:0.72rem;color:var(--muted)">app.clarityandflow.de</div></div>
+        </div>
+        <div class="miniline"></div><div class="miniline s"></div>
+        <div class="fill"></div>
+        <div class="cap"><b>3</b><span id="capC">Hinzufügen</span></div>
+      </div>
+
+    </div></div>
+  </div>
+
+  <div class="steps" id="steps"></div>
+
+  <button class="cta" id="primary">App öffnen</button>
+  <p class="hint" id="hint"></p>
+</div>
+
+<script>
+(function(){
+  var ua = navigator.userAgent || "";
+  var isiOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  var isAndroid = /Android/i.test(ua);
+  var inApp = /(FBAN|FBAV|Instagram|Line|Twitter|Pinterest|Snapchat|LinkedInApp|GSA|WhatsApp)/i.test(ua);
+  var standalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
+
+  function el(id){ return document.getElementById(id); }
+  function shareSVG(){ return '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3"/><path d="M8 7l4-4 4 4"/><path d="M5 12v7a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-7"/></svg>'; }
+  function dotsSVG(){ return '<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>'; }
+
+  var steps = el('steps'), primary = el('primary'), hint = el('hint');
+
+  function renderSteps(arr){
+    steps.innerHTML = arr.map(function(t,i){ return '<div class="step"><span class="n">'+(i+1)+'</span><p>'+t+'</p></div>'; }).join('');
+  }
+  function openApp(){ location.href = "/"; }
+
+  // already installed
+  if (standalone){
+    el('h1').textContent = "Du hast die App schon.";
+    el('sub').textContent = "Clarity & Flow liegt bereits auf deinem Homescreen. Tipp einfach auf das Symbol – oder hier:";
+    el('stage').style.display = "none";
+    primary.className = "cta lime"; primary.textContent = "Jetzt öffnen"; primary.onclick = openApp;
+    return;
+  }
+
+  if (inApp){ el('inapp').style.display = "block"; }
+
+  if (isAndroid){
+    el('sub').textContent = "Damit Clarity & Flow wie eine echte App auf deinem Startbildschirm liegt.";
+    el('topdots').innerHTML = dotsSVG();
+    el('barA').innerHTML = '<div class="ico">‹</div><div class="ico">›</div><div class="ico hl pulse">'+dotsSVG()+'</div><div class="ico">▦</div>';
+    el('capA').textContent = "Menü ⋮";
+    el('menuLabel').textContent = "Zum Startbildschirm hinzufügen";
+    el('capB').textContent = "Zum Startbildschirm";
+    el('addTop').textContent = "Installieren";
+    el('capC').textContent = "Installieren";
+    renderSteps([
+      "Tippe oben rechts auf das Menü <b>⋮</b>.",
+      "Wähle <b>„Zum Startbildschirm hinzufügen“</b> (oder „App installieren“).",
+      "Mit <b>„Installieren“</b> bestätigen – fertig."
+    ]);
+    primary.className = "cta lime"; primary.textContent = "Jetzt installieren"; primary.disabled = true; primary.style.opacity=".55";
+    var deferred = null;
+    window.addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); deferred = e; primary.disabled=false; primary.style.opacity="1"; });
+    primary.onclick = function(){ if(deferred){ deferred.prompt(); deferred=null; } else { openApp(); } };
+    window.addEventListener('appinstalled', function(){ primary.textContent="Installiert ✓"; });
+    hint.innerHTML = 'Erscheint kein Installieren-Knopf, geht es über das Menü ⋮ oben rechts.';
+    return;
+  }
+
+  if (isiOS){
+    el('topdots').innerHTML = dotsSVG();
+    el('barA').innerHTML = '<div class="ico">‹</div><div class="ico">›</div><div class="ico hl pulse">'+shareSVG()+'</div><div class="ico">▤</div><div class="ico">⧉</div>';
+    el('capA').textContent = "Teilen";
+    renderSteps([
+      "Tippe unten auf das <b>Teilen-Symbol</b> (Quadrat mit Pfeil nach oben). Siehst du es nicht, erst auf <b>„•••“</b>.",
+      "Etwas nach unten scrollen und <b>„Zum Home-Bildschirm“</b> wählen.",
+      "Oben rechts mit <b>„Hinzufügen“</b> bestätigen."
+    ]);
+    primary.textContent = "Zur App"; primary.onclick = openApp;
+    hint.innerHTML = 'Wichtig: am iPhone muss die Seite in <b>Safari</b> geöffnet sein.';
+    return;
+  }
+
+  // Desktop
+  el('sub').textContent = "Öffne die App am besten auf dem Handy – dort liegt sie als Symbol auf dem Startbildschirm. Am Computer kannst du sie installieren:";
+  el('stage').style.display = "none";
+  renderSteps([
+    "Öffne <b>app.clarityandflow.de</b> in Chrome, Edge oder Brave.",
+    "Klick rechts in der Adresszeile auf das <b>Installieren-Symbol</b>.",
+    "Bestätigen – die App startet als eigenes Fenster."
+  ]);
+  primary.textContent = "App öffnen"; primary.onclick = openApp;
+  hint.innerHTML = 'Am schönsten ist die App auf dem Smartphone.';
+})();
+</script>
+</body></html>
